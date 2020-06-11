@@ -36,6 +36,7 @@ public class Program {
 		sellerDao.insert(seller1);
 		System.out.println("Inserted! New id = " + seller1.getId());
 		
+		
 
 	}
 
