@@ -33,7 +33,7 @@ public class Program2 {
 		depDao.update(newDep);
 		System.out.println("Update completed!");
 		
-		System.out.println("\n=== TESTE 6: seller deleteById ===");
+		System.out.println("\n=== TESTE 5: department deleteById ===");
 		depDao.deleteById(9);
 
 	}
