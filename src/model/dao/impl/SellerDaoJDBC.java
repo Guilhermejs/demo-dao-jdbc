@@ -20,7 +20,9 @@ import model.entities.Seller;
 public class SellerDaoJDBC implements SellerDao {
 	
 	private Connection conn;
+	private DepartmentDaoJDBC depDaoJDBC;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	
 	public SellerDaoJDBC(Connection conn) {
 		this.conn = conn;
@@ -126,7 +128,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Department dep = instantiateDepartment(rs);
+				Department dep = depDaoJDBC.instantiateDepartment(rs);
 				Seller sel = instantiateSeller(rs, dep);
 				return sel;
 			}
@@ -160,7 +162,7 @@ public class SellerDaoJDBC implements SellerDao {
 			while (rs.next()) {
 				Department dep = map.get(rs.getInt("DepartmentId"));
 				if(dep == null) {
-					dep = instantiateDepartment(rs);
+					dep = depDaoJDBC.instantiateDepartment(rs);
 					map.put(rs.getInt("DepartmentId"), dep);
 				}
 				Seller sel = instantiateSeller(rs, dep);
@@ -194,7 +196,7 @@ public class SellerDaoJDBC implements SellerDao {
 			while (rs.next()) {
 				Department dep = map.get(rs.getInt("DepartmentId"));
 				if(dep == null) {
-					dep = instantiateDepartment(rs);
+					dep = depDaoJDBC.instantiateDepartment(rs);
 					map.put(rs.getInt("DepartmentId"), dep);
 				}
 				Seller sel = instantiateSeller(rs, dep);
@@ -209,13 +211,6 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeResultSet(rs);
 			DB.closeStatement(st);
 		}
-	}
-	
-	private Department instantiateDepartment(ResultSet rs) throws SQLException {
-		Department dep = new Department();
-		dep.setId(rs.getInt("DepartmentId"));
-		dep.setName(rs.getString("DepName"));
-		return dep;
 	}
 	
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
